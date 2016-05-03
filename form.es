@@ -3,9 +3,12 @@ require('./form.css');
 const moo = require('@webhare-system/frameworks/mootools/core')
 const WHBase = require('@webhare-system/compat/base');
 const domfocus = require('@webhare-system/dom/focus')
+const domui = require('@webhare-system/dom/ui')
 const domevents = require('@webhare-system/dom/events')
 const legacybase = require('@webhare-system/internal/legacybase')
 const models = require('./models.es');
+const Element = moo.Element;
+const Locale = require("@webhare-system/frameworks/mootools/locale");
 
 /*! LOAD: frameworks.mootools.core, wh.compat.base, frameworks.mootools.more.class.binds
     LOAD: wh.ui.base
@@ -1081,7 +1084,7 @@ let Handler = new Class(
     this.submitting = true;
     this.form.addClass("submitting");
 
-    this.submitbusylock = donui.createBusyLock([ 'wh.form' ]);
+    this.submitbusylock = domui.createBusyLock([ 'wh.form' ]);
 
     domui.updateUIBusyFlag(+1);
   }
@@ -1188,7 +1191,7 @@ let Handler = new Class(
 , getStateForApi:function(tosubmit, issubmit) //returns a value suitable for the formsapi
   {
     var retentionfield = this.form.getElement('input[name="formsapi-retentionid"]');
-    var retval = { lang: this.options.lang || (Locale.getCurrent() ? Locale.getCurrent().name : '') || $wh.getDocumentLanguage()
+    var retval = { lang: this.options.lang || (Locale.getCurrent() ? Locale.getCurrent().name : '') || document.documentElement.lang
                  , retentionid: retentionfield ? retentionfield.get('value') : ''
                  , partial: tosubmit != this.form
                  };
@@ -1439,7 +1442,7 @@ let Handler = new Class(
       event.stop();
 
       var formaction = event.target.getAttribute('data-form-action') || 'submit';
-      var evt = new $wh.Form.ActionEvent(this, event.target, formaction);
+      var evt = new ActionEvent(this, event.target, formaction);
 
       this.fireEvent("formaction", evt);
       if(!evt.defaultPrevented)
@@ -1728,7 +1731,7 @@ let Handler = new Class(
           model.setEnabled(shouldshow);
       }.bind(this));
 
-    $wh.fireLayoutChangeEvent(node);
+    legacybase.fireLayoutChangeEvent(node);
   }
 
   // ---------------------------------------------------------------------------

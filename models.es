@@ -5,11 +5,13 @@
 
 const moo = require('@webhare-system/frameworks/mootools/core')
 const WHBase = require('@webhare-system/compat/base');
+const Locale = require('@webhare-system/frameworks/mootools/locale');
 const legacybase = require('@webhare-system/internal/legacybase');
 const domevents = require('@webhare-system/dom/events')
 const domfocus = require('@webhare-system/dom/focus')
 const domui = require('@webhare-system/dom/ui')
 const $=moo.$
+const Element = moo.Element;
 
 function getFieldName(node)
 {
@@ -366,10 +368,10 @@ let ModelBase = new Class(
   /// override this function to define your own focus error handling
 , focusError: function()
   {
-    var focusable = $wh.getFocusableElement(this.node);
-    if(focusable && !$wh.isFocusableComponent(focusable))
+    var focusable = domfocus.getFocusableElement(this.node);
+    if(focusable && !domfocus.isFocusableComponent(focusable))
     {
-      var options = $wh.getFocusableComponents(focusable, false);
+      var options = domfocus.getFocusableComponents(focusable, false);
       focusable = options.pick();
     }
     if(focusable)
